@@ -54,3 +54,19 @@ async def read_item(item_id: int, skip: int = 0, limit: int = 10):
 ```
 
 In this example, `item_id` is a path parameter, while `skip` and `limit` are query parameters. This endpoint allows you to retrieve information about a specific item (`item_id`), and optionally specify pagination parameters (`skip` and `limit`).
+
+## Quesry Parameters with Optional
+
+```python
+from fastapi import FastAPI
+from typing import Optional
+
+@app.get("/skip_book/")
+async def skip_book(skip_book: Optional[str] = None):
+    if skip_book:
+        new_book = BOOKS.copy()
+        del new_book[skip_book]
+        return new_book
+    else:
+        return BOOKS
+```

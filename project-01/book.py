@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Optional
 
 from fastapi import FastAPI
 
@@ -46,3 +47,44 @@ async def get_directions(direction_name: Directions):
         return {"direction": "east", "sub": "left"}
     if direction_name == Directions.west:
         return {"direction": "west", "sub": "right"}
+
+
+@app.get("/skip_book/")
+async def skip_book(skip_book: Optional[str] = None):
+    if skip_book:
+        new_book = BOOKS.copy()
+        del new_book[skip_book]
+        return new_book
+    else:
+        return BOOKS
+
+
+@app.post("/create_book")
+async def create_book(book_title: str, book_author: str):
+    count = 0
+
+    if len(BOOKS) > 0:
+        for _ in BOOKS:
+            count += 1
+    BOOKS[f"book_{count + 1}"] = {"title": book_title, "author": book_author}
+    return BOOKS
+
+
+@app.put("/update_book/{book_name}")
+async def update_book(book_name: str, book_title: str, book_author: str):
+    BOOKS[book_name] = {"title": book_title, "author": book_author}
+    return BOOKS
+
+
+@app.delete("/delete_book/{book_name}")
+async def delete_book(book_name: str):
+    deleted_book = BOOKS[book_name]
+    del BOOKS[book_name]
+    return deleted_book
+
+
+@app.delete("/delete_book/")
+async def delete_book(book_name: str):
+    deleted_book = BOOKS[book_name]
+    del BOOKS[book_name]
+    return deleted_book
