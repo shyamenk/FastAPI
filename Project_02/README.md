@@ -5,7 +5,7 @@
 ### Pydantic Data Model
 
 - `Base Model` - Used to create a Schema
-- Validation - `Fields` from pydantic
+- `Validation` - `Fields` from pydantic
 
 ---
 
@@ -106,4 +106,17 @@ app = FastAPI()
 @app.post("/books/login")
 async def book_login(username: str = Form(), passsword: str = Form()):
     return {"username": username, "passoord": passsword}
+```
+
+### Work with Headers
+
+```python
+from fastapi import FastAPI, HTTPException, Request, status,Form,Header
+app = FastAPI()
+
+@app.get("/header")
+async def get_header(random_header: Optional[str] = Header(None)):
+    return {"header": random_header}
+
+
 ```

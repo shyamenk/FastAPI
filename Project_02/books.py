@@ -1,6 +1,7 @@
+from typing import Optional
 from uuid import UUID
 
-from fastapi import FastAPI, Form, HTTPException, Request, status
+from fastapi import FastAPI, Form, Header, HTTPException, Request, status
 from pydantic import BaseModel, Field
 from starlette.responses import JSONResponse
 
@@ -107,6 +108,11 @@ async def get_books_by_id(book_id: UUID):
         book.id == book_id
         return book
     raise HTTPException(status_code=404, detail="Book not found")
+
+
+@app.get("/header")
+async def get_header(random_header: Optional[str] = Header(None)):
+    return {"header": random_header}
 
 
 # POST Create New book
