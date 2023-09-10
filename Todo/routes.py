@@ -1,9 +1,14 @@
 from database import SessionLocal
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
-from models import Todo as Todo_model
+from models import Todos as Todo_model
+from models import Users
+from schemas import CreateUser
 from schemas import Todo as Todo_schema
 from sqlalchemy.orm import Session
+from utils import http_notfound_exception
+
+from Todo.utils import hash_password
 
 router = APIRouter()
 
@@ -88,5 +93,25 @@ async def delete_todo(todo_id: int, db: Session = Depends(create_db_session)):
     return is_todo
 
 
-def http_notfound_exception():
-    return HTTPException(status_code=404, detail="Todo not found!")
+@router.post("/create_user")
+async def create_new_user(user: CreateUser, db: Session = Depends(create_db_session)):
+    hashed_password = hash_password(user.password)
+    new_user = Users(
+        email=user.email,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        hashed_password=hashed_password,
+        is_active=True,
+    )
+    if new_user is None:
+        raise http_notfound_exception(message="User")
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+
+@router.get("/user/{user_id}")
+async def get_user_by_id(user_id: int, db: Session = Depends(create_db_session)):
+    user = db.query(Users).get(user_id)
+    return user

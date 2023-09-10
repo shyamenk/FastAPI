@@ -8,3 +8,10 @@ class Todo(BaseModel):
     description: Optional[str]
     priority: int = Field(gt=0, lt=6, description="Priority Must be 0 to 5")
     is_complete: bool
+
+
+class CreateUser(BaseModel):
+    email: Optional[str]
+    first_name: str
+    last_name: str
+    password: str
