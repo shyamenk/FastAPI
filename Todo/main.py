@@ -1,10 +1,10 @@
-from database import engine
+from databases import Base, engine
 from fastapi import FastAPI
-from models import Base
-from routes import router
+from routes import todo_route, user_route
 
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-app.include_router(router=router)
+app.include_router(user_route.router)
+app.include_router(todo_route.router)
