@@ -1,2 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 fast_api_env
-__pycache__
+# Virtual environments
+venv/
+env/
+ENV/
+*.env
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Configuration files
+config.ini
+.env
+
+# Dependency directories
+node_modules/
+
+# Compiled or built files
+dist/
+build/
+*.egg-info/
