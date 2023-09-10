@@ -10,5 +10,13 @@ class CreateUser(BaseModel):
     password: str
 
 
+class User(BaseModel):
+    user_id: int
+    email: Optional[str]
+    first_name: str
+    last_name: str
+    is_active: bool
+
+
 class TokenData:
-    username: str | None
+    email: str | None
