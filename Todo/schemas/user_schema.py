@@ -18,5 +18,12 @@ class User(BaseModel):
     is_active: bool
 
 
-class TokenData:
-    email: str | None
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class UserVerification(BaseModel):
+    email: str
+    password: str
+    new_password: str
