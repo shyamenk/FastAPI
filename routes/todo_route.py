@@ -8,16 +8,17 @@ from sqlalchemy.orm import Session
 from utils.util import create_db_session, get_current_user, notfound_exception
 
 router = APIRouter(
-    prefix="/todos", tags=["Todo"], responses={404: {"description": "Not found."}}
+    prefix="/api/todos",
+    tags=["Todo Management"],
+    responses={404: {"description": "Not found."}},
 )
-
 db_dependency = Annotated[Session, Depends(create_db_session)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
 
 # Getting all todos (/todos)
 @router.get("/")
-async def all_todos(db: db_dependency):
+async def get_all_todos(db: db_dependency):
     try:
         todos = db.query(TodoModel).all()
         if todos is None:
@@ -31,7 +32,7 @@ async def all_todos(db: db_dependency):
 
 
 # Creating a new todo (/todos/new)
-@router.post("/new")
+@router.post("/create")
 async def create_todo(user: user_dependency, todo: TodoSchema, db: db_dependency):
     try:
         if user is None:
